@@ -21,7 +21,7 @@ const config = {
         trustServerCertificate: true // change to true for local dev / self-signed certs
     }
 };
-
+const connectionString= "Server=tcp:eu-az-sql-serv1.database.windows.net,1433;Initial Catalog=ihmproduction;Persist Security Info=False;User ID=vietlink;Password=G00dday!@#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 // Middleware
 app.use(express.json());
 
@@ -31,7 +31,7 @@ app.post('/api/questions', async (req, res) => {
     // Xử lý dữ liệu ở đây, ví dụ lưu vào database
     try {
         // Kết nối database
-        await sql.connect(config);
+        await sql.connect(connectionString);
 
         // Tạo một đối tượng Request mới
         const request = new sql.Request();

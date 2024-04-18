@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const bodyParser = require('body-parser');
 app.use(cors({
-    origin:"https://ihm-client-d280b8ad84d7.herokuapp.com/"
+    origin:"https://ihm-server-bfbad1b97e15.herokuapp.com/"
 }))
 app.use(express.json());
 app.use(bodyParser.json()); // Để xử lý JSON payload từ request

@@ -58,7 +58,7 @@ app.post('/api/questions', async (req, res) => {
 app.get('/api/question/:code', async (req, res) => {
     try {
         // Kết nối database
-        await sql.connect(config);
+        await sql.connect(connectionString);
 
         // Tạo một đối tượng Request mới
         const request = new sql.Request();

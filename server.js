@@ -81,7 +81,9 @@ app.get('/api/question/:code', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-
+app.post('/api/answers',async(req, res)=>{
+    
+})
 app.listen(PORT, () => {
   console.log(`Server đang chạy trên port ${PORT}`);
 });

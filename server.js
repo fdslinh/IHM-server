@@ -40,9 +40,9 @@ app.post('/api/questions', async (req, res) => {
         const questionCode = req.params.code;
         request.input('code', sql.NVarChar(10), code);
         request.input('content', sql.NVarChar(10), question);
-        request.input('solution', sql.NVarChar(10), solution);
+        request.input('solution', sql.NVarChar(sql.MAX), solution);
         request.input('level', sql.Int, difficulty);
-        request.input('answer', sql.NVarChar(10), answer);
+        request.input('answer', sql.NVarChar(sql.MAX), answer);
         // Thực hiện gọi Stored Procedure
         const result = await request.execute('uspAddUpdateQuestion');
 
@@ -82,7 +82,22 @@ app.get('/api/question/:code', async (req, res) => {
     }
 });
 app.post('/api/answers',async(req, res)=>{
-    
+    const {code, answer}= req.body;
+    try{
+        await sql.connect(connectionString);
+        const request= new sql.Request();
+        request.input('code', sql.NVarChar(10), code);
+        request.input('answer', sql.NVarChar(sql.MAX), answer);
+        const result = await request.execute('uspCheckAnswerByQuestionCode');
+        if(result.recordset.length>0){
+            res.json(result.recordset);
+        }else{
+            res.status(404).send('Answer incorrect');
+        }
+    }catch (err) {
+        console.error('Database connection error', err);
+        res.status(500).send('Server error');
+    }
 })
 app.listen(PORT, () => {
   console.log(`Server đang chạy trên port ${PORT}`);

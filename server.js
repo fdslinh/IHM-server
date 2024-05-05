@@ -92,7 +92,7 @@ app.post('/api/answers',async(req, res)=>{
         if(result.recordset.length>0){
             res.json(result.recordset);
         }else{
-            res.status(404).send('Answer incorrect');
+            res.json('Answer incorrect');
         }
     }catch (err) {
         console.error('Database connection error', err);

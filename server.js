@@ -82,12 +82,12 @@ app.get('/api/question/:code', async (req, res) => {
     }
 });
 app.post('/api/answers',async(req, res)=>{
-    const {code, answer}= req.body;
+    const {questionCode, answers}= req.body;
     try{
         await sql.connect(connectionString);
         const request= new sql.Request();
-        request.input('code', sql.NVarChar(10), code);
-        request.input('answer', sql.NVarChar(sql.MAX), answer);
+        request.input('code', sql.NVarChar(10), questionCode);
+        request.input('answer', sql.NVarChar(sql.MAX), answers);
         const result = await request.execute('uspCheckAnswerByQuestionCode');
         if(result.recordset.length>0){
             res.json(result.recordset);

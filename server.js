@@ -38,8 +38,8 @@ app.post('/api/questions', async (req, res) => {
 
         // Thêm tham số cho Stored Procedure
         const questionCode = req.params.code;
-        request.input('code', sql.NVarChar(10), code);
-        request.input('content', sql.NVarChar(10), question);
+        request.input('code', sql.NVarChar(50), code);
+        request.input('content', sql.NVarChar(sql.MAX), question);
         request.input('solution', sql.NVarChar(sql.MAX), solution);
         request.input('level', sql.Int, difficulty);
         request.input('answer', sql.NVarChar(sql.MAX), answer);
@@ -86,7 +86,7 @@ app.post('/api/answers',async(req, res)=>{
     try{
         await sql.connect(connectionString);
         const request= new sql.Request();
-        request.input('code', sql.NVarChar(10), questionCode);
+        request.input('code', sql.NVarChar(50), questionCode);
         request.input('answer', sql.NVarChar(sql.MAX), answers);
         const result = await request.execute('uspCheckAnswerByQuestionCode');
         if(result.recordset.length>0){

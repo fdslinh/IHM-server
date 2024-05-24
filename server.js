@@ -31,7 +31,7 @@ app.post('/api/questions', async (req, res) => {
     // Xử lý dữ liệu ở đây, ví dụ lưu vào database
     try {
         // Kết nối database
-        await sql.connect(connectionString);
+        await sql.connect(config);
 
         // Tạo một đối tượng Request mới
         const request = new sql.Request();
@@ -58,7 +58,7 @@ app.post('/api/questions', async (req, res) => {
 app.get('/api/question/:code', async (req, res) => {
     try {
         // Kết nối database
-        await sql.connect(connectionString);
+        await sql.connect(config);
 
         // Tạo một đối tượng Request mới
         const request = new sql.Request();
@@ -84,7 +84,7 @@ app.get('/api/question/:code', async (req, res) => {
 app.post('/api/answers',async(req, res)=>{
     const {questionCode, answers}= req.body;
     try{
-        await sql.connect(connectionString);
+        await sql.connect(config);
         const request= new sql.Request();
         request.input('code', sql.NVarChar(50), questionCode);
         request.input('answer', sql.NVarChar(sql.MAX), answers);

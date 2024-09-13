@@ -5,7 +5,9 @@ const PORT = 3000 || 3001;
 const bodyParser = require('body-parser');
 // const websocket= require('ws');
 // const wss= new websocket.Server({port:PORT});
-app.use(cors());
+app.use(cors({
+    origin: 'https://ihatemath.info'
+  }));
 app.use(express.json());
 app.use(bodyParser.json()); // Để xử lý JSON payload từ request
 const {Pool}= require('pg');

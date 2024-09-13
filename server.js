@@ -1,7 +1,7 @@
 const express = require('express');
 const cors= require('cors');
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT|| 3001;
 const bodyParser = require('body-parser');
 // const websocket= require('ws');
 // const wss= new websocket.Server({port:PORT});
@@ -100,27 +100,35 @@ app.use(express.json());
 app.get('/api/question/:code', async (req, res) => {
     try {
         // Kết nối database
-        pool.connect(function(err, client, done){
-            if(err){
-                return console.error('Error fetching client from Pool', err);                
-            }
-            const questionCode = req.params.code;
-            const query = `CALL getquestionbycode($1, $2, $3, $4, $5, $6, $7);`;
-            // Tạo một đối tượng Request mới
-            client.query(query, [questionCode, null, null, null, null, null, null], function(err, result){
-                done();
-                if(err){
-                    return console.error('Error running query', err);
-                }
-                // Kiểm tra và trả về kết quả
-                if (result.rows.length > 0 && result.rows[0].question_id != null) {
-                    res.json(result.rows);
-                } else {
-                    res.status(404).send('Question not found');
-                }
-            });                        
-        });
+        // pool.connect(function(err, client, done){
+        //     if(err){
+        //         return console.error('Error fetching client from Pool', err);                
+        //     }
+        //     const questionCode = req.params.code;
+        //     const query = `CALL getquestionbycode($1, $2, $3, $4, $5, $6, $7);`;
+        //     // Tạo một đối tượng Request mới
+        //     client.query(query, [questionCode, null, null, null, null, null, null], function(err, result){
+        //         done();
+        //         if(err){
+        //             return console.error('Error running query', err);
+        //         }
+        //         // Kiểm tra và trả về kết quả
+        //         if (result.rows.length > 0 && result.rows[0].question_id != null) {
+        //             res.json(result.rows);
+        //         } else {
+        //             res.status(404).send('Question not found');
+        //         }
+        //     });                        
+        // });
+        const questionCode = req.params.code;
+        const query = `CALL getquestionbycode($1, $2, $3, $4, $5, $6, $7);`;
+        const result = await pool.query(query, [questionCode, null, null, null, null, null, null]);
         
+        if (result.rows.length > 0 && result.rows[0].question_id != null) {
+            res.json(result.rows);
+        } else {
+            res.status(404).send('Question not found');
+        }
     } catch (err) {
         console.error('Database connection error', err);
         res.status(500).send('Server error');

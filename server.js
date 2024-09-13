@@ -3,15 +3,13 @@ const cors= require('cors');
 const app = express();
 const PORT = 8000 || 3001;
 const bodyParser = require('body-parser');
-const websocket= require('ws');
-const wss= new websocket.Server({port:PORT});
+// const websocket= require('ws');
+// const wss= new websocket.Server({port:PORT});
 app.use(cors({
-    origin:"*"//"https://ihm-client.fly.dev/"
+    origin:"https://ihm-client-d9a79d2243d5.herokuapp.com/"//"https://ihm-client.fly.dev/"
 }))
 app.use(express.json());
 app.use(bodyParser.json()); // Để xử lý JSON payload từ request
-
-const sql = require('mssql');
 const {Pool}= require('pg');
 const postgresConfig= require('./dbConfig');
 const pool= new Pool(

@@ -1,14 +1,12 @@
 const express = require('express');
 const cors= require('cors');
 const app = express();
-const PORT = 3000 || 3001;
+const PORT = 3001;
 const bodyParser = require('body-parser');
 // const websocket= require('ws');
 // const wss= new websocket.Server({port:PORT});
-app.use(cors({
-    origin: 'https://ihatemath.info'
-  }));
-app.use(express.json());
+app.use(cors());
+
 app.use(bodyParser.json()); // Để xử lý JSON payload từ request
 const {Pool}= require('pg');
 const postgresConfig= require('./dbConfig');
@@ -19,56 +17,9 @@ const pool= new Pool(
     ssl:{rejectUnauthorized:false}
 }
 );
-//websocket
-// wss.on('connection',(ws)=>{
-//    console.log('Client kết nối đến WebSocket server.');
 
-//   // Gửi tin nhắn cho client khi kết nối thành công
-//     ws.send(JSON.stringify({ message: 'Chào mừng bạn đã kết nối với WebSocket server!' }));
-//     ws.on('message', (message) => {
-//         console.log('Tin nhắn nhận được từ client:', message);
-
-//         // Parse dữ liệu nếu tin nhắn từ client là JSON
-//         let data;
-//         try {
-//             data = JSON.parse(message);
-//         } catch (error) {
-//             console.error('Không thể parse dữ liệu từ client:', error);
-//             return;
-//         }
-//         if (data.action === 'getQuestionInfo' && data.questionId) {
-//             try {
-//                 // Kết nối database
-//                 pool.connect(function (err, client, done) {
-//                     if (err) {
-//                         return console.error('Error fetching client from Pool', err);
-//                     }
-//                     const questionCode = req.params.code;
-//                     const query = `CALL getquestionbycode($1, $2, $3, $4, $5, $6, $7);`;
-//                     // Tạo một đối tượng Request mới
-//                     client.query(query, [questionCode, null, null, null, null, null, null], function (err, result) {
-//                         done();
-//                         if (err) {
-//                             return console.error('Error running query', err);
-//                         }
-//                         // Kiểm tra và trả về kết quả
-//                         if (result.rows.length > 0 && result.rows[0].question_id != null) {
-//                             res.json(result.rows);
-//                         } else {
-//                             res.status(404).send('Question not found');
-//                         }
-//                     });
-//                 });
-
-//             } catch (err) {
-//                 console.error('Database connection error', err);
-//                 res.status(500).send('Server error');
-//             }
-//         }
-//     });
-// });
 // Middleware
-// app.use(express.json());
+app.use(express.json());
 //sqlServer
 // Định nghĩa API
 // app.post('/api/questions', async (req, res) => {

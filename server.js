@@ -1,7 +1,7 @@
 const express = require('express');
 const cors= require('cors');
 const app = express();
-const PORT = 8000 || 3001;
+const PORT = 3000 || 3001;
 const bodyParser = require('body-parser');
 // const websocket= require('ws');
 // const wss= new websocket.Server({port:PORT});

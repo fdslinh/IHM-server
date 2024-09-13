@@ -12,7 +12,8 @@ const {Pool}= require('pg');
 const postgresConfig= require('./dbConfig');
 const pool= new Pool(
     //postgresConfig
-    {connectionString:"postgres://postgres:OWtwhRz4agC15A9@ihm-db.flycast:5432",
+    {connectionString:process.env.DATABASE_URL,
+        //"postgres://postgres:OWtwhRz4agC15A9@ihm-db.flycast:5432",
     ssl:{rejectUnauthorized:false}
 }
 );

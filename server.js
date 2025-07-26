@@ -12,6 +12,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(bodyParser.json());
+app.use(express.json()); // Đã có trong code bạn rồi
 
 // Lấy câu hỏi theo code
 app.get('/api/question/:code', async (req, res) => {
@@ -55,9 +56,11 @@ app.post('/api/answers', async (req, res) => {
 });
 
 app.post('/api/save-question', async (req, res) => {
+    console.log(req.body);
     try {
         await sql.connect(sqlConfig);
-        const { id, code, text, solution, answer, isMultiAnswer } = req.body;
+        // req.body sẽ là object
+        const { id, code, text, solution, answer, isMultiAnswer, Grade } = req.body;
         const request = new sql.Request();
         request.input('id', sql.Int, id);
         request.input('code', sql.NVarChar(50), code);
@@ -65,6 +68,7 @@ app.post('/api/save-question', async (req, res) => {
         request.input('solution', sql.NVarChar(sql.MAX), solution);
         request.input('answer', sql.NVarChar(sql.MAX), answer);
         request.input('isMultiAnswer', sql.Int, isMultiAnswer);
+        request.input('Grade', sql.Int, Grade);
         const result = await request.execute('AddUpdateQuestion');
         res.json({ success: true, result: result.recordset });
     } catch (err) {
